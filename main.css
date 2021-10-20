@@ -1,0 +1,22 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.upBound{
+    width: 100%;
+    height: 100px;
+    float: left;
+}
+#myCanvas{
+    float: left;
+}
+
+.typeBtn{
+    width: 100px;
+    height: 50px;
+    display: none;
+    float: left;
+}
+.typeBtn:hover{
+    cursor: pointer;
+}
