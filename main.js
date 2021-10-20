@@ -104,39 +104,45 @@ function showUnit(start, end, src, width, height){
 }
 
 // show the series structure
-function showSeries(start, end, num, height){
+function showSeries(unit, num){
+    
+    let end = unit.end;
+    let start = unit.start;
     let delta = (end[0] - start[0]) / num;
-    let position = [];
+    let units = [];
+    
     for (let i = 0; i < num; i++){
-        position.push([start, [start[0] + delta, start[1]]]);
-        drawBox(start, [start[0] + delta, start[1]], height);
+        units.push(new Unit(start, [start[0] + delta, start[1]], (unit.width - num * 100) / num, unit.height));
+        drawBox(start, [start[0] + delta, start[1]], unit.height);
         start = [start[0] + delta, start[1]];    
     }
+    return units;
     
-    // return every x, y of the boxs
-    return position;
 }
 
 // show the parallel structure
-function showParallel(start, end, num, height){
+function showParallel(unit, num){
+
+    let end = unit.end;
+    let start = unit.start;
+    let height = unit.height;
+
     drawLine([start[0], start[1] - height / 2], [start[0], start[1] + height / 2]);
     drawLine([end[0], end[1] - height / 2], [end[0], end[1] + height / 2]);
     
     let delta = height / (num - 1);
-    let position = [];
+    let units = [];
     start[1] = start[1] - height / 2 - delta;
     
     for (let i = 0; i < num; i++){ 
-        position.push([[start[0], start[1] + delta], [end[0], start[1] + delta]]);
+        units.push(new Unit([start[0], start[1] + delta], [end[0], start[1] + delta], unit.width, height / num));
         drawBox([start[0], start[1] + delta], [end[0], start[1] + delta], height / num);
         start = [start[0], start[1] + delta];    
     }
-
-    // return every x, y of the boxs
-    return position;
+    return units;
 }
 
-// Initialization
+// Initialization (line 140 to 148)
 showSource(100, 400, "https://cdn-icons-png.flaticon.com/512/120/120319.png", 0, 100);
 showSource(100, 550, "https://cdn-icons-png.flaticon.com/512/120/120324.png", 0, 100);
 
@@ -145,8 +151,6 @@ drawLine([150, 500], [150, 570]);
 // start = (150 350) end = (1200 350)
 drawLine([150, 400], [150, 350]);
 drawLine([1200, 350], [150, 540]);
-
-
 drawBox([150, 350], [1200, 350], 200);
 
 
@@ -241,18 +245,10 @@ class Unit{
 
         switch (type){
             case 1:
-                this.Units = [];
-                let position = showSeries(this.start, this.end, num, this.height);
-                for (let i = 0; i < num; i++){
-                    this.Units.push(new Unit(position[i][0], position[i][1], (this.width - num * 100) / num, this.height));
-                }
+                this.Units = showSeries(this, num);
                 break;
             case -1:
-                this.Units = [];
-                let pos = showParallel(this.start, this.end, num, this.height);
-                for (let i = 0; i < num; i++){
-                    this.Units.push(new Unit(pos[i][0], pos[i][1], this.width, this.height / num));
-                }
+                this.Units = showParallel(this, num);
                 break;
             case 0:
                 if (num == 0){
