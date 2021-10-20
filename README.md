@@ -9,3 +9,5 @@
 ## Capacitor icon : https://cdn-icons-png.flaticon.com/512/120/120302.png
 
 ## Inductor icon : https://cdn-icons-png.flaticon.com/512/114/114762.png
+
+## Ground icon : https://cdn-icons-png.flaticon.com/512/120/120324.png
