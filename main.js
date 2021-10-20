@@ -1,5 +1,7 @@
 // detect is an array for searching all the box element that haven't been filled in
 var detect = []; 
+//click_index to check which clicked unit is
+var click_index;
 
 // give two point and draw a line
 function drawLine(point_1, point_2){
@@ -56,10 +58,16 @@ function showSource(x, y, src, width, height){
 }
 
 // when click series or parallel will use it (generate the box waiting for filling in)
-function drawBox(start, end, height){
+function drawBox(unit){
+    // we set the height of canvas
     let init_height = 100;
     var canvas = document.getElementById("myCanvas");
     var context = canvas.getContext("2d");
+
+    let start = unit.start;
+    let end = unit.end;
+    let height = unit.height;
+
     drawLine(start, [start[0] + 50, start[1]]);
     start = [start[0] + 50, start[1]];
     drawLine([end[0] - 50, end[1]], end);
@@ -68,13 +76,18 @@ function drawBox(start, end, height){
     context.fillStyle = "black";
     context.fillRect(start[0], start[1] - height / 2, end[0] - start[0], height);
 
-    detect.push([start[0], start[1] - height / 2 + init_height, end[0], end[1] + height / 2 + init_height]);
+    detect.push([start[0], start[1] - height / 2 + init_height, end[0], end[1] + height / 2 + init_height, unit]);
 }
 
 // when fill in the box and erase it
-function eraseBox(start, end, height){
+function eraseBox(unit){
     var canvas = document.getElementById("myCanvas");
     var context = canvas.getContext("2d");
+    let start = unit.start;
+    let end = unit.end; 
+    let height = unit.height;
+    start = [start[0] + 50, start[1]];
+    end = [end[0] - 50, end[1]];
     context.fillStyle = "white";
     context.fillRect(start[0], start[1] - height / 2, end[0] - start[0], height);
     
@@ -113,7 +126,7 @@ function showSeries(unit, num){
     
     for (let i = 0; i < num; i++){
         units.push(new Unit(start, [start[0] + delta, start[1]], (unit.width - num * 100) / num, unit.height));
-        drawBox(start, [start[0] + delta, start[1]], unit.height);
+        drawBox(units[i]);
         start = [start[0] + delta, start[1]];    
     }
     return units;
@@ -123,8 +136,8 @@ function showSeries(unit, num){
 // show the parallel structure
 function showParallel(unit, num){
 
-    let end = unit.end;
-    let start = unit.start;
+    let end = [unit.end[0] - 50, unit.end[1]];
+    let start = [unit.start[0] + 50, unit.start[1]];
     let height = unit.height;
 
     drawLine([start[0], start[1] - height / 2], [start[0], start[1] + height / 2]);
@@ -134,15 +147,15 @@ function showParallel(unit, num){
     let units = [];
     start[1] = start[1] - height / 2 - delta;
     
-    for (let i = 0; i < num; i++){ 
+    for (let i = 0; i < num; i++){
         units.push(new Unit([start[0], start[1] + delta], [end[0], start[1] + delta], unit.width, height / num));
-        drawBox([start[0], start[1] + delta], [end[0], start[1] + delta], height / num);
+        drawBox(units[i]);
         start = [start[0], start[1] + delta];    
     }
     return units;
 }
 
-// Initialization (line 140 to 148)
+// Initialization (line 157 to 164)
 showSource(100, 400, "https://cdn-icons-png.flaticon.com/512/120/120319.png", 0, 100);
 showSource(100, 550, "https://cdn-icons-png.flaticon.com/512/120/120324.png", 0, 100);
 
@@ -151,59 +164,56 @@ drawLine([150, 500], [150, 570]);
 // start = (150 350) end = (1200 350)
 drawLine([150, 400], [150, 350]);
 drawLine([1200, 350], [150, 540]);
-drawBox([150, 350], [1200, 350], 200);
 
 
 
 var canvas = document.getElementById("myCanvas");
-
-canvas.addEventListener('mousemove', function(event){
-    for(let i = 0; i < detect.length; i++){
-        if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]){
-            document.getElementsByTagName('body')[0].style.cursor = "pointer";
-        }else{
-            document.getElementsByTagName('body')[0].style.cursor = "default"; 
-        }
-    }
-});
-
 var typeBtn = document.getElementsByClassName('typeBtn');
 
 for (let i = 0; i < typeBtn.length; i++){
     typeBtn[i].addEventListener("click", function(){
-        eraseBox(head.start, head.end, head.height);
-        detect.pop();
-
+        eraseBox(detect[click_index][4]);
         switch (i){
+            // set each button's duty
             case 0:
-                head.setType(1, 3);
+                detect[click_index][4].setType(1, 3);
                 break;
             case 1:
-                head.setType(-1, 3);
+                detect[click_index][4].setType(-1, 3);
                 break;
             case 2:
-                head.setType(0, 0);
+                detect[click_index][4].setType(0, 0);
                 break;
             case 3:
-                head.setType(0, 1);
+                detect[click_index][4].setType(0, 1);
                 break;
             case 4:
-                head.setType(0, 2);
+                detect[click_index][4].setType(0, 2);
                 break;
         }
-
+        detect.splice(click_index, 1);
         btnNotVisit();
     });
 }
 
-canvas.addEventListener("click", function(event){
-    
+canvas.addEventListener('mousemove', function(event){
+    console.log(detect.length);
     for(let i = 0; i < detect.length; i++){
         if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]){
-            for (let j = 0; j < typeBtn.length; j++){
-                btnCanVisit();
-            }
+            canvas.style.cursor = "pointer";
+            break;
+        }else{
+            canvas.style.cursor = "default"; 
+        }
+    }
+});
 
+canvas.addEventListener("click", function(event){
+    for(let i = 0; i < detect.length; i++){
+        if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]){
+            click_index = i;
+            btnCanVisit();
+            break;
         }else{
             btnNotVisit();
         }
@@ -270,4 +280,6 @@ class Unit{
     
 }
 
-var head = new Unit([200, 350], [1150, 350], 950, 200);
+var head = new Unit([150, 350], [1200, 350], 950, 200);
+drawBox(head);
+
