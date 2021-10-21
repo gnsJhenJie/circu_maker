@@ -195,8 +195,9 @@ for (let i = 0; i < typeBtn.length; i++){
     });
 }
 
+// move over boxes and change into pointer,
+// while move out them and change into default
 canvas.addEventListener('mousemove', function(event){
-    console.log(detect.length);
     for(let i = 0; i < detect.length; i++){
         if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]){
             canvas.style.cursor = "pointer";
@@ -207,6 +208,8 @@ canvas.addEventListener('mousemove', function(event){
     }
 });
 
+// click at boxes open the typeBtns, 
+// click at other place close them
 canvas.addEventListener("click", function(event){
     for(let i = 0; i < detect.length; i++){
         if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]){
@@ -263,6 +266,8 @@ class Unit{
                 if (num == 0){
                     let src = "https://cdn-icons-png.flaticon.com/512/120/120336.png";
                     showUnit(this.start, this.end, src, this.width, this.height);
+                    // test
+                    this.resistance = 50;
                 }else if (num == 1){
                     let src = "https://cdn-icons-png.flaticon.com/512/120/120302.png";
                     showUnit(this.start, this.end, src, this.width, this.height);
@@ -271,7 +276,7 @@ class Unit{
                     showUnit(this.start, this.end, src, this.width, this.height);
                 }
                     
-                this.Units = [null];
+                this.Units = [];
                 break;
         }
 
@@ -288,17 +293,16 @@ class Unit{
                     // Parallel
                     sum = sum + 1 / this.Units[i].calResistance();
                     break;
-                case 0:
-                    sum = this.Units[i].resistance;
-                    break;
             }
         }
         if (this.type == -1){
-            this.Units[i].resistance = 1 / sum;
+            this.resistance = 1 / sum;
             return 1 / sum;
-        }else{
-            this.Units[i].resistance = sum;
+        }else if (this.type == 1){
+            this.resistance = sum;
             return sum;
+        }else{
+            return this.resistance;
         }
     }
     
@@ -306,4 +310,7 @@ class Unit{
 
 var head = new Unit([150, 350], [1200, 350], 950, 200);
 drawBox(head);
+document.getElementsByClassName('cal')[0].addEventListener('click', function(){
+    console.log(head.calResistance());
+})
 
