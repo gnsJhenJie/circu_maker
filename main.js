@@ -102,10 +102,9 @@ function showUnit(start, end, src, width, height){
     image.src = src;
 
     image.addEventListener('load', function(){
-        if (width == 0){
+        if (width >= height){
             width = height;
-        }
-        if (height == 0){
+        }else{
             height = width;
         }
 
@@ -263,19 +262,44 @@ class Unit{
             case 0:
                 if (num == 0){
                     let src = "https://cdn-icons-png.flaticon.com/512/120/120336.png";
-                    showUnit(this.start, this.end, src, 0, 100);
+                    showUnit(this.start, this.end, src, this.width, this.height);
                 }else if (num == 1){
                     let src = "https://cdn-icons-png.flaticon.com/512/120/120302.png";
-                    showUnit(this.start, this.end, src, 0, 100);
+                    showUnit(this.start, this.end, src, this.width, this.height);
                 }else if (num == 2){
                     let src = "https://cdn-icons-png.flaticon.com/512/114/114762.png";
-                    showUnit(this.start, this.end, src, 0, 100);
+                    showUnit(this.start, this.end, src, this.width, this.height);
                 }
                     
                 this.Units = [null];
                 break;
         }
 
+    }
+    calResistance(){
+        let sum = 0;
+        for (let i = 0; i < this.Units.length; i++){
+            switch (this.type){
+                case 1:
+                    // Series
+                    sum = sum + this.Units[i].calResistance();
+                    break;
+                case -1:
+                    // Parallel
+                    sum = sum + 1 / this.Units[i].calResistance();
+                    break;
+                case 0:
+                    sum = this.Units[i].resistance;
+                    break;
+            }
+        }
+        if (this.type == -1){
+            this.Units[i].resistance = 1 / sum;
+            return 1 / sum;
+        }else{
+            this.Units[i].resistance = sum;
+            return sum;
+        }
     }
     
 }
