@@ -3,10 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <link href="/css/main.css" type="text/css" rel="stylesheet">
+    <link href="../../css/main.css" type="text/css" rel="stylesheet">
+
     <!-- BootStrap's JS and CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -14,17 +16,74 @@
     <div class="upBound">
         <button class="typeBtn">Series</button>
         <button class="typeBtn">Parallel</button>
-        <button class="typeBtn">Resistence</button>
+        <button class="typeBtn">Resistance</button>
         <button class="typeBtn">Capatitor</button>
         <button class="typeBtn">Inductor</button>
-        <button class="cal"> Calculate </button>
+        <img src="https://cdn-icons.flaticon.com/png/512/3599/premium/3599960.png?token=exp=1634892181~hmac=2a3bfa227fb15262f431ca07cb23e805" class="run" height="90px">
 
     </div>
 
-    <canvas id="myCanvas" width="1300" height="650">
+    <canvas id="myCanvas" width="1250" height="650">
 
     </canvas>
-    <script src="/js/main.js" type="text/javascript"></script>
+
+    <div class= "functionBox">
+        <div class="card" style="width: 90%;">
+            <img src="https://cdn-icons-png.flaticon.com/512/5904/5904238.png" class="card-img-top d-block mx-auto" alt="Resistance" style= "width: 50%;">
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Num = </span>
+                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                </div>
+                <div class="btn btn-primary submit">submit</div>
+            </div>
+        </div>
+        <div class="card" style="width: 90%;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3/3815.png" class="card-img-top d-block mx-auto" alt="Resistance" style= "width: 50%;">
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Num = </span>
+                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                </div>
+                <div class="btn btn-primary submit">submit</div>
+            </div>
+        </div>
+        <div class="card" style="width: 90%;">
+            <img src="https://cdn-icons-png.flaticon.com/512/120/120336.png" class="card-img-top d-block mx-auto" alt="Resistance" style= "width: 50%;">
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">R = </span>
+                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <span class="input-group-text">Ω</span>
+                </div>
+                <div class="btn btn-primary submit">submit</div>
+            </div>
+        </div>
+        <div class="card" style="width: 90%;">
+            <img src="https://cdn-icons-png.flaticon.com/512/120/120302.png" class="card-img-top d-block mx-auto" alt="Capatitor" style= "width: 50%;">
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">C = </span>
+                    <input type="text" class="form-control">
+                    <span class="input-group-text">F</span>
+                </div>
+                <div class="btn btn-primary submit">submit</div>
+            </div>
+        </div>
+        <div class="card" style="width: 90%;">
+            <img src="https://cdn-icons-png.flaticon.com/512/114/114762.png" class="card-img-top d-block mx-auto" alt="Inductor" style= "width: 50%;">
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">L = </span>
+                    <input type="text" class="form-control">
+                    <span class="input-group-text">H</span>
+                </div>
+                <div class="btn btn-primary submit">submit</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/main.js" type="text/javascript"></script>
 </body>
 
 </html>
