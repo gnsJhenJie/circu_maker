@@ -310,7 +310,8 @@ class Unit{
 
 var head = new Unit([150, 350], [1200, 350], 950, 200);
 drawBox(head);
+
+// click cal button to print out the total resistance in console
 document.getElementsByClassName('cal')[0].addEventListener('click', function(){
     console.log(head.calResistance());
 })
-
