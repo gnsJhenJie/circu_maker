@@ -161,8 +161,8 @@ showSource(100, 550, "https://cdn-icons-png.flaticon.com/512/120/120324.png", 0,
 // connect DC & GND
 drawLine([150, 500], [150, 570]);
 // start = (150 350) end = (1200 350)
-drawLine([150, 400], [150, 350]);
-drawLine([1200, 350], [150, 540]);
+drawLine([150, 400], [150, 300]);
+drawLine([1200, 300], [150, 540]);
 
 
 
@@ -218,7 +218,7 @@ canvas.addEventListener("click", function(event){
     for(let i = 0; i < detect.length; i++){
         if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]){
             click_index = i;
-            functionBox[0].style.display = "block";
+            functionBox[0].style.display = "flex";
             break;
         }else{
             functionBox[0].style.display = "none";
@@ -301,7 +301,7 @@ class Unit{
     
 }
 
-var head = new Unit([150, 350], [1200, 350], 950, 200);
+var head = new Unit([150, 300], [1200, 300], 950, 200);
 drawBox(head);
 
 // run button interaction effect
@@ -313,11 +313,11 @@ window.onload = function(){
     });
 
     runBtn.addEventListener('mouseover', function(){
-        runBtn.src = "https://cdn-icons.flaticon.com/png/512/3599/premium/3599938.png?token=exp=1634892185~hmac=d5f9fe6407e67693938cf765ee12f81d"; 
+        runBtn.style.cursor = "pointer"; 
     });
 
     runBtn.addEventListener('mouseleave', function(){
-        runBtn.src = "https://cdn-icons.flaticon.com/png/512/3599/premium/3599960.png?token=exp=1634892181~hmac=2a3bfa227fb15262f431ca07cb23e805";
+        runBtn.style.cursor = "default";
     });
 
 };
