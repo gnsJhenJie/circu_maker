@@ -161,37 +161,41 @@ showSource(100, 550, "https://cdn-icons-png.flaticon.com/512/120/120324.png", 0,
 // connect DC & GND
 drawLine([150, 500], [150, 570]);
 // start = (150 350) end = (1200 350)
-drawLine([150, 400], [150, 350]);
-drawLine([1200, 350], [150, 540]);
+drawLine([150, 400], [150, 300]);
+drawLine([1200, 300], [150, 540]);
 
 
 
 var canvas = document.getElementById("myCanvas");
-var typeBtn = document.getElementsByClassName('typeBtn');
+var submitBtn = document.getElementsByClassName('submit');
+var input = document.getElementsByTagName("input");
 
-for (let i = 0; i < typeBtn.length; i++){
-    typeBtn[i].addEventListener("click", function(){
+var functionBox = document.getElementsByClassName('functionBox');
+
+for (let i = 0; i < submitBtn.length; i++){
+    submitBtn[i].addEventListener("click", function(){
         eraseBox(detect[click_index][4]);
         switch (i){
             // set each button's duty
             case 0:
-                detect[click_index][4].setType(1, 3);
+                detect[click_index][4].setType(1, parseInt(input[i].value), 0);
                 break;
             case 1:
-                detect[click_index][4].setType(-1, 3);
+                detect[click_index][4].setType(-1, parseInt(input[i].value), 0);
                 break;
             case 2:
-                detect[click_index][4].setType(0, 0);
+                detect[click_index][4].setType(0, 0, parseInt(input[i].value));
                 break;
             case 3:
-                detect[click_index][4].setType(0, 1);
+                detect[click_index][4].setType(0, 1, parseInt(input[i].value));
                 break;
             case 4:
-                detect[click_index][4].setType(0, 2);
+                detect[click_index][4].setType(0, 2, parseInt(input[i].value));
                 break;
         }
         detect.splice(click_index, 1);
-        btnNotVisit();
+        input[i].value = "";
+        functionBox[0].style.display = "none";
     });
 }
 
@@ -208,30 +212,19 @@ canvas.addEventListener('mousemove', function(event){
     }
 });
 
-// click at boxes open the typeBtns, 
+// click at boxes open the Btns, 
 // click at other place close them
 canvas.addEventListener("click", function(event){
     for(let i = 0; i < detect.length; i++){
         if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]){
             click_index = i;
-            btnCanVisit();
+            functionBox[0].style.display = "flex";
             break;
         }else{
-            btnNotVisit();
+            functionBox[0].style.display = "none";
         }
     }
 });
-
-function btnCanVisit(){
-    for (let i = 0; i < typeBtn.length; i++){
-        typeBtn[i].style.display = "block";
-    }
-}
-function btnNotVisit(){
-    for (let i = 0; i < typeBtn.length; i++){
-        typeBtn[i].style.display = "none";
-    }
-}
 
 class Unit{
     
@@ -246,7 +239,7 @@ class Unit{
     }
 
     // setter
-    setType(type, num){
+    setType(type, num, value){
         /*******************************\ 
         **** type :                 **** 
         ****   1 : series           ****
@@ -267,7 +260,7 @@ class Unit{
                     let src = "https://cdn-icons-png.flaticon.com/512/120/120336.png";
                     showUnit(this.start, this.end, src, this.width, this.height);
                     // test
-                    this.resistance = 50;
+                    this.resistance = value;
                 }else if (num == 1){
                     let src = "https://cdn-icons-png.flaticon.com/512/120/120302.png";
                     showUnit(this.start, this.end, src, this.width, this.height);
@@ -308,9 +301,23 @@ class Unit{
     
 }
 
-var head = new Unit([150, 350], [1200, 350], 950, 200);
+var head = new Unit([150, 300], [1200, 300], 950, 200);
 drawBox(head);
-document.getElementsByClassName('cal')[0].addEventListener('click', function(){
-    console.log(head.calResistance());
-})
 
+// run button interaction effect
+window.onload = function(){
+    var runBtn = document.getElementsByClassName('run')[0];
+    // click cal button to print out the total resistance in console
+    runBtn.addEventListener('click', function(){
+        console.log(head.calResistance());
+    });
+
+    runBtn.addEventListener('mouseover', function(){
+        runBtn.style.cursor = "pointer"; 
+    });
+
+    runBtn.addEventListener('mouseleave', function(){
+        runBtn.style.cursor = "default";
+    });
+
+};
