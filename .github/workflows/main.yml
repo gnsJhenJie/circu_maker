@@ -10,7 +10,7 @@ jobs:
         - uses: actions/checkout@v2
         
         - name: Deploy to S3
-          run: aws s3 sync / s3://circuit.gnsjhenjie.tech/ --delete --acl=public-read && aws cloudfront create-invalidation --distribution-id=E19EF8F5UHI9YT --paths='/*'
+          run: aws s3 sync . s3://circuit.gnsjhenjie.tech/ --delete --acl=public-read && aws cloudfront create-invalidation --distribution-id=E19EF8F5UHI9YT --paths='/*'
           env:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
