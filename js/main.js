@@ -62,7 +62,7 @@ function showSource(x, y, src, width, height) {
 // when click series or parallel will use it (generate the box waiting for filling in)
 function drawBox(unit) {
     // we set the height of canvas
-    let init_height = 100;
+    let init_height = 140;
     var canvas = document.getElementById("myCanvas");
     var context = canvas.getContext("2d");
 
@@ -158,14 +158,15 @@ function showParallel(unit, num) {
 
 // Initialization (line 157 to 164)
 showSource(100, 400, "https://cdn-icons-png.flaticon.com/512/120/120319.png", 0, 100);
-detect.push([100, 500, 200, 600, null]);
+detect.push([100, 540, 200, 640, null]);
 showSource(100, 550, "https://cdn-icons-png.flaticon.com/512/120/120324.png", 0, 100);
 
 // connect DC & GND
 drawLine([150, 500], [150, 570]);
 // start = (150 350) end = (1200 350)
 drawLine([150, 400], [150, 300]);
-drawLine([1200, 300], [150, 540]);
+drawLine([150, 540], [700, 540])
+drawLine([1200, 300], [800, 540]);
 
 
 
@@ -330,7 +331,7 @@ class Unit {
     showResult(){
         for (let i = 0; i < this.Units.length; i++) {
             if (this.Units[i].type == 0){
-                detect.push([this.Units[i].start[0] + 50, this.Units[i].start[1] + 100 - this.Units[i].height / 2, this.Units[i].end[0] - 50, this.Units[i].start[1] + 100 + this.Units[i].height / 2, this.Units[i]]);
+                detect.push([this.Units[i].start[0] + 50, this.Units[i].start[1] + 140 - this.Units[i].height / 2, this.Units[i].end[0] - 50, this.Units[i].start[1] + 140 + this.Units[i].height / 2, this.Units[i]]);
             }
             this.Units[i].showResult();
         }
@@ -339,7 +340,15 @@ class Unit {
 }
 
 var head = new Unit([150, 300], [1200, 300], 950, 200);
-drawBox(head);
+head.Units = []
+head.Units[0] = new Unit([150, 300], [1200, 300], 950, 200);
+drawBox(head.Units[0]);
+showSource(700, 490, 'https://cdn-icons-png.flaticon.com/512/120/120336.png', 100, 0)
+head.type = 1;
+head.Units[1] = new Unit([650, 540], [850, 540], 100, 100); 
+head.Units[1].type = 0;
+head.Units[1].Units = [];
+head.Units[1].resistance = 100;
 
 // run button interaction effect
 window.onload = function () {
