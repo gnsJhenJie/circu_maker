@@ -178,9 +178,11 @@ var functionBox = document.getElementsByClassName('functionBox');
 
 for (let i = 0; i < submitBtn.length; i++) {
     submitBtn[i].addEventListener("click", function () {
-        if (i == submitBtn.length - 1) {
+        if (i == submitBtn.length - 2) {
             V = parseInt(input[i].value);
-        } else {
+        }else if (i == submitBtn.length - 1){
+            head.Units[1].resistance = parseInt(input[i].value);
+        }else {
             eraseBox(detect[click_index][4]);
             switch (i) {
                 // set each button's duty
@@ -222,9 +224,15 @@ function clicking(event) {
             functionBox[0].style.display = "flex";
             if (click_index == 0){
                 document.getElementById('source').style.display = 'block';
+                document.getElementById('test').style.display = 'none';
+                document.getElementById("accordionFlushExample").style.display = "none";
+            }else if (click_index == 1){
+                document.getElementById('source').style.display = 'none';
+                document.getElementById('test').style.display = 'block';
                 document.getElementById("accordionFlushExample").style.display = "none";
             }else{
                 document.getElementById('source').style.display = 'none';
+                document.getElementById('test').style.display = 'none';
                 document.getElementById("accordionFlushExample").style.display = "block";
             }
             break;
@@ -342,13 +350,15 @@ class Unit {
 var head = new Unit([150, 300], [1200, 300], 950, 200);
 head.Units = []
 head.Units[0] = new Unit([150, 300], [1200, 300], 950, 200);
+detect.push([700, 630, 800, 730, head.Units[1]]);
 drawBox(head.Units[0]);
+
 showSource(700, 490, 'https://cdn-icons-png.flaticon.com/512/120/120336.png', 100, 0)
 head.type = 1;
 head.Units[1] = new Unit([650, 540], [850, 540], 100, 100); 
 head.Units[1].type = 0;
 head.Units[1].Units = [];
-head.Units[1].resistance = 100;
+
 
 // run button interaction effect
 window.onload = function () {
@@ -362,6 +372,15 @@ window.onload = function () {
         detect.pop();
         canvas.removeEventListener('click', clicking);
         head.showResult();
+
+        alert("計算完成");
+
+        let die = 0.1;
+        if (head.Units[1].current >= die){
+            alert("電流過大，你被電死了!");
+        }else{
+            alert("安全電路天才!");
+        }
 
         canvas.addEventListener('click', function(event){
             showBoard.innerHTML = "";
