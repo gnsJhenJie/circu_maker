@@ -2,7 +2,8 @@
 var detect = [];
 //click_index to check which clicked unit is
 var click_index;
-var V;
+var V = 110;
+var showBoard = document.querySelector('#showBoard .card-body');
 
 // give two point and draw a line
 function drawLine(point_1, point_2) {
@@ -213,9 +214,7 @@ canvas.addEventListener('mousemove', function (event) {
     }
 });
 
-// click at boxes open the Btns, 
-// click at other place close them
-canvas.addEventListener("click", function (event) {
+function clicking(event) {
     for (let i = 0; i < detect.length; i++) {
         if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]) {
             click_index = i;
@@ -232,7 +231,12 @@ canvas.addEventListener("click", function (event) {
             functionBox[0].style.display = "none";
         }
     }
-});
+}
+
+
+// click at boxes open the Btns, 
+// click at other place close them
+canvas.addEventListener("click", clicking);
 
 class Unit {
 
@@ -323,6 +327,15 @@ class Unit {
         }
     }
 
+    showResult(){
+        for (let i = 0; i < this.Units.length; i++) {
+            if (this.Units[i].type == 0){
+                detect.push([this.Units[i].start[0] + 50, this.Units[i].start[1] + 100 - this.Units[i].height / 2, this.Units[i].end[0] - 50, this.Units[i].start[1] + 100 + this.Units[i].height / 2, this.Units[i]]);
+            }
+            this.Units[i].showResult();
+        }
+    }
+
 }
 
 var head = new Unit([150, 300], [1200, 300], 950, 200);
@@ -337,7 +350,34 @@ window.onload = function () {
         head.voltage = V;
         head.current = head.voltage / head.resistance
         head.cal();
-        console.log(head);
+        detect.pop();
+        canvas.removeEventListener('click', clicking);
+        head.showResult();
+
+        canvas.addEventListener('click', function(event){
+            showBoard.innerHTML = "";
+            for (let i = 0; i < detect.length; i++) {
+                if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]) {
+                    click_index = i;
+                    functionBox[0].style.display = "flex";
+                    document.getElementById('source').style.display = 'none';
+                    document.getElementById("accordionFlushExample").style.display = "none";
+                    
+                    document.getElementById('showBoard').style.display = 'block';
+                    let node1 = document.createElement('p'), node2 = document.createElement('p'), node3 = document.createElement('p');
+                    node1.innerHTML = "電阻 : " + detect[click_index][4].resistance;
+                    showBoard.appendChild(node1);
+                    node2.innerHTML = "電流 : " + detect[click_index][4].current;
+                    showBoard.appendChild(node2);
+                    node3.innerHTML = "電壓 : " + detect[click_index][4].voltage; 
+                    showBoard.appendChild(node3);
+                    break;
+                } else {
+                    functionBox[0].style.display = "none";
+                }
+            }
+        });
+
     });
 
     runBtn.addEventListener('mouseover', function () {
