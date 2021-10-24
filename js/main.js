@@ -370,6 +370,7 @@ window.onload = function () {
         head.current = head.voltage / head.resistance
         head.cal();
         detect.pop();
+        detect.pop();
         canvas.removeEventListener('click', clicking);
         head.showResult();
 
@@ -389,15 +390,16 @@ window.onload = function () {
                     click_index = i;
                     functionBox[0].style.display = "flex";
                     document.getElementById('source').style.display = 'none';
-                    document.getElementById("accordionFlushExample").style.display = "none";
+                document.getElementById('test').style.display = 'none';
+                document.getElementById("accordionFlushExample").style.display = "none";
                     
                     document.getElementById('showBoard').style.display = 'block';
                     let node1 = document.createElement('p'), node2 = document.createElement('p'), node3 = document.createElement('p');
-                    node1.innerHTML = "電阻 : " + detect[click_index][4].resistance;
+                    node1.innerHTML = "電阻 : " + detect[click_index][4].resistance.toFixed(2) + "Ω";
                     showBoard.appendChild(node1);
-                    node2.innerHTML = "電流 : " + detect[click_index][4].current;
+                    node2.innerHTML = "電流 : " + detect[click_index][4].current.toFixed(2) + "Amp";
                     showBoard.appendChild(node2);
-                    node3.innerHTML = "電壓 : " + detect[click_index][4].voltage; 
+                    node3.innerHTML = "電壓 : " + detect[click_index][4].voltage.toFixed(2) + "Volt"; 
                     showBoard.appendChild(node3);
                     break;
                 } else {
