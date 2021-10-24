@@ -47,7 +47,7 @@ function showSource(x, y, src, width, height) {
     var image = new Image();
     image.src = src;
 
-    image.addEventListener('load', function () {
+    image.addEventListener('load', function() {
         if (width == 0) {
             width = height / image.height * image.width;
         }
@@ -75,7 +75,7 @@ function drawBox(unit) {
     drawLine([end[0] - 50, end[1]], end);
     end = [end[0] - 50, end[1]];
 
-    context.fillStyle = "black";
+    context.fillStyle = "gray";
     context.fillRect(start[0], start[1] - height / 2, end[0] - start[0], height);
 
     detect.push([start[0], start[1] - height / 2 + init_height, end[0], end[1] + height / 2 + init_height, unit]);
@@ -103,7 +103,7 @@ function showUnit(start, end, src, width, height) {
     var image = new Image();
     image.src = src;
 
-    image.addEventListener('load', function () {
+    image.addEventListener('load', function() {
         if (width >= height) {
             width = height;
         } else {
@@ -177,12 +177,12 @@ var input = document.getElementsByTagName("input");
 var functionBox = document.getElementsByClassName('functionBox');
 
 for (let i = 0; i < submitBtn.length; i++) {
-    submitBtn[i].addEventListener("click", function () {
+    submitBtn[i].addEventListener("click", function() {
         if (i == submitBtn.length - 2) {
             V = parseInt(input[i].value);
-        }else if (i == submitBtn.length - 1){
+        } else if (i == submitBtn.length - 1) {
             head.Units[1].resistance = parseInt(input[i].value);
-        }else {
+        } else {
             eraseBox(detect[click_index][4]);
             switch (i) {
                 // set each button's duty
@@ -197,7 +197,7 @@ for (let i = 0; i < submitBtn.length; i++) {
                     break;
             }
             detect.splice(click_index, 1);
-            
+
         }
         input[i].value = "";
         functionBox[0].style.display = "none";
@@ -206,7 +206,7 @@ for (let i = 0; i < submitBtn.length; i++) {
 
 // move over boxes and change into pointer,
 // while move out them and change into default
-canvas.addEventListener('mousemove', function (event) {
+canvas.addEventListener('mousemove', function(event) {
     for (let i = 0; i < detect.length; i++) {
         if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]) {
             canvas.style.cursor = "pointer";
@@ -222,15 +222,15 @@ function clicking(event) {
         if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]) {
             click_index = i;
             functionBox[0].style.display = "flex";
-            if (click_index == 0){
+            if (click_index == 0) {
                 document.getElementById('source').style.display = 'block';
                 document.getElementById('test').style.display = 'none';
                 document.getElementById("accordionFlushExample").style.display = "none";
-            }else if (click_index == 1){
+            } else if (click_index == 1) {
                 document.getElementById('source').style.display = 'none';
                 document.getElementById('test').style.display = 'block';
                 document.getElementById("accordionFlushExample").style.display = "none";
-            }else{
+            } else {
                 document.getElementById('source').style.display = 'none';
                 document.getElementById('test').style.display = 'none';
                 document.getElementById("accordionFlushExample").style.display = "block";
@@ -327,8 +327,7 @@ class Unit {
                 this.Units[i].current = this.current;
                 this.Units[i].voltage = this.current * this.Units[i].resistance;
                 this.Units[i].cal();
-            }
-            else if (this.type == -1) {
+            } else if (this.type == -1) {
                 this.Units[i].voltage = this.voltage;
                 this.Units[i].current = this.voltage / this.Units[i].resistance;
                 this.Units[i].cal();
@@ -336,9 +335,9 @@ class Unit {
         }
     }
 
-    showResult(){
+    showResult() {
         for (let i = 0; i < this.Units.length; i++) {
-            if (this.Units[i].type == 0){
+            if (this.Units[i].type == 0) {
                 detect.push([this.Units[i].start[0] + 50, this.Units[i].start[1] + 140 - this.Units[i].height / 2, this.Units[i].end[0] - 50, this.Units[i].start[1] + 140 + this.Units[i].height / 2, this.Units[i]]);
             }
             this.Units[i].showResult();
@@ -355,16 +354,16 @@ drawBox(head.Units[0]);
 
 showSource(700, 490, 'https://cdn-icons-png.flaticon.com/512/120/120336.png', 100, 0)
 head.type = 1;
-head.Units[1] = new Unit([650, 540], [850, 540], 100, 100); 
+head.Units[1] = new Unit([650, 540], [850, 540], 100, 100);
 head.Units[1].type = 0;
 head.Units[1].Units = [];
 
 
 // run button interaction effect
-window.onload = function () {
+window.onload = function() {
     var runBtn = document.getElementsByClassName('run')[0];
     // click cal button to print out the total resistance in console
-    runBtn.addEventListener('click', function () {
+    runBtn.addEventListener('click', function() {
         head.resistance = head.calResistance();
         head.voltage = V;
         head.current = head.voltage / head.resistance
@@ -377,29 +376,31 @@ window.onload = function () {
         alert("計算完成");
 
         let die = 0.1;
-        if (head.Units[1].current >= die){
+        if (head.Units[1].current >= die) {
             alert("電流過大，你被電死了!");
-        }else{
+        } else {
             alert("安全電路天才!");
         }
 
-        canvas.addEventListener('click', function(event){
+        canvas.addEventListener('click', function(event) {
             showBoard.innerHTML = "";
             for (let i = 0; i < detect.length; i++) {
                 if (event.pageX > detect[i][0] && event.pageX < detect[i][2] && event.pageY > detect[i][1] && event.pageY < detect[i][3]) {
                     click_index = i;
                     functionBox[0].style.display = "flex";
                     document.getElementById('source').style.display = 'none';
-                document.getElementById('test').style.display = 'none';
-                document.getElementById("accordionFlushExample").style.display = "none";
-                    
+                    document.getElementById('test').style.display = 'none';
+                    document.getElementById("accordionFlushExample").style.display = "none";
+
                     document.getElementById('showBoard').style.display = 'block';
-                    let node1 = document.createElement('p'), node2 = document.createElement('p'), node3 = document.createElement('p');
+                    let node1 = document.createElement('p'),
+                        node2 = document.createElement('p'),
+                        node3 = document.createElement('p');
                     node1.innerHTML = "電阻 : " + detect[click_index][4].resistance.toFixed(2) + "Ω";
                     showBoard.appendChild(node1);
                     node2.innerHTML = "電流 : " + detect[click_index][4].current.toFixed(2) + "Amp";
                     showBoard.appendChild(node2);
-                    node3.innerHTML = "電壓 : " + detect[click_index][4].voltage.toFixed(2) + "Volt"; 
+                    node3.innerHTML = "電壓 : " + detect[click_index][4].voltage.toFixed(2) + "Volt";
                     showBoard.appendChild(node3);
                     break;
                 } else {
@@ -410,11 +411,11 @@ window.onload = function () {
 
     });
 
-    runBtn.addEventListener('mouseover', function () {
+    runBtn.addEventListener('mouseover', function() {
         runBtn.style.cursor = "pointer";
     });
 
-    runBtn.addEventListener('mouseleave', function () {
+    runBtn.addEventListener('mouseleave', function() {
         runBtn.style.cursor = "default";
     });
 
